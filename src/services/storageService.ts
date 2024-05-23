@@ -9,7 +9,6 @@ import { UserData } from "../servicesTest/databaseFunctions";
 export interface IStorageService {
   initializeDatabase(): Promise<void>;
   getUsers(): Promise<UserData[]>;
-  addUser(user: UserData): Promise<number>;
   updateUserById(id: string, active: number): Promise<void>;
   deleteUserById(id: string): Promise<void>;
   getDatabaseName(): string;
@@ -69,19 +68,7 @@ class StorageService implements IStorageService {
   async getUsers(): Promise<UserData[]> {
     return (await this.db.query("SELECT * FROM users;")).values as UserData[];
   }
-  async addUser(user: UserData): Promise<number> {
-    const sql = `INSERT INTO users (name) VALUES (?);`;
-    const res = await this.db.run(sql, [user.name]);
-    if (
-      res.changes !== undefined &&
-      res.changes.lastId !== undefined &&
-      res.changes.lastId > 0
-    ) {
-      return res.changes.lastId;
-    } else {
-      throw new Error(`storageService.addUser: lastId not returned`);
-    }
-  }
+
   async updateUserById(id: string, active: number): Promise<void> {
     const sql = `UPDATE users SET active=${active} WHERE id=${id}`;
     await this.db.run(sql);
