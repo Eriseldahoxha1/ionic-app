@@ -2,7 +2,7 @@
     "apps":
     [
         {
-            "appId": "com.example.app",
+            "appId": "7a96419a",
             "dependencyInstallCommand": "npm install --legacy-peer-deps"
         }
     ]
